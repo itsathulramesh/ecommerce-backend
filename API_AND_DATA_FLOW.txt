@@ -1,0 +1,69 @@
+API FLOW AND DATA CONNECTIONS
+=============================
+
+This document outlines the API endpoints, their corresponding flows, and how they interact with the database tables (Prisma Models).
+
+1. DATABASE SCHEMA (MODELS)
+---------------------------
+- User: Stores user account details (name, email, password, etc.).
+- Product: Stores product details (name, price, stock, etc.).
+- CartItem: Links a User to a Product with a quantity (Shopping Cart).
+- Order: Represents a completed purchase by a User.
+- OrderItem: Links an Order to a Product with a quantity/price snapshot.
+
+2. API ROUTES & DATA FLOW
+-------------------------
+
+Base URL: /api
+
+A. AUTHENTICATION (`/api/auth`)
+   - Source: `src/routes/auth.routes.js`
+   - Connection: `User` Table
+
+   1. POST /register
+      - Flow: Accepts user details -> Hashes password -> Creates new record in `User` table.
+   2. POST /login
+      - Flow: Check email in `User` table -> Verify password -> Returns JWT Token.
+   3. GET /me (Protected)
+      - Flow: Validates Token -> Fetches current user details from `User` table.
+
+B. PRODUCTS (`/api/products`)
+   - Source: `src/routes/product.routes.js`
+   - Connection: `Product` Table
+
+   1. GET /
+      - Flow: Fetches all records from `Product` table.
+   2. GET /:id
+      - Flow: Fetches a single record from `Product` table by ID.
+   3. POST / (Protected)
+      - Flow: Validates Token -> Creates new record in `Product` table.
+   4. PUT /:id (Protected)
+      - Flow: Validates Token -> Updates record in `Product` table.
+   5. DELETE /:id (Protected)
+      - Flow: Validates Token -> Deletes record from `Product` table.
+
+C. CART (`/api/cart`)
+   - Source: `src/routes/cart.routes.js`
+   - Connection: `CartItem` Table (linked to `User` and `Product`)
+
+   1. GET / (Protected)
+      - Flow: Fetches all `CartItem` records for the logged-in user.
+      - Data Join: Likely includes `product` details for each item.
+   2. POST / (Protected)
+      - Flow: Adds a new `CartItem` or updates quantity if product already in cart.
+   3. PUT /:productId (Protected)
+      - Flow: Updates quantity of specific product in user's cart.
+   4. DELETE /:productId (Protected)
+      - Flow: Removes a `CartItem` for the specific product.
+
+D. SYSTEM / UTILS
+   - GET /api/health: Returns server health status.
+   - GET /api/test-db: Queries `User` table to verify database connection.
+
+3. DATA RELATIONSHIPS SUMMARY
+-----------------------------
+- User 1:N Order (One user can have many orders)
+- User 1:N CartItem (One user can have many items in cart)
+- Product 1:N CartItem (One product can be in many users' carts)
+- Order 1:N OrderItem (One order has many items)
+- Product 1:N OrderItem (One product can appear in many orders)
