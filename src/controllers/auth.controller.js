@@ -48,8 +48,8 @@ const userRegister = async (req, res) => {
         createdAt: user.createdAt,
       },
     });
-  } catch (err) {
-    console.error("Register error ", err);
+  } catch (error) {
+    console.error("Register error ", error);
     res.status(500).json({
       message: "Internal sevrer error",
     });
@@ -107,8 +107,8 @@ const userLogin = async (req,res)=>{
       },
     })
 
-  } catch(err){
-    console.error("Login error ",err);
+  } catch(error){
+    console.error("Login error ",error);
     res.status(500).json({
       message: "Internal server error"
     })

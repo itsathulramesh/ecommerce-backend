@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const prisma = require("../models/prisma");
 
-const authRoutes = require("./auth.routes")
+const authRoutes = require("./auth.routes");
+const productRoutes = require('./product.routes');
+const cartRoutes = require('./cart.routes');
 
 //heath check
 router.get("/health", (req, res) => {
@@ -27,7 +29,12 @@ router.get("/test-db", async (req, res) => {
   }
 });
 
-//auth route
+//auth routes
 router.use("/auth",authRoutes);
 
+//product routes
+router.use('/products',productRoutes);
+
+//cart routes
+router.use('/cart',cartRoutes);
 module.exports = router;
