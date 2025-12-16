@@ -5,6 +5,7 @@ const prisma = require("../models/prisma");
 const authRoutes = require("./auth.routes");
 const productRoutes = require('./product.routes');
 const cartRoutes = require('./cart.routes');
+const orderRoutes = require('./order.routes');
 
 //heath check
 router.get("/health", (req, res) => {
@@ -20,8 +21,7 @@ router.get("/test-db", async (req, res) => {
   try {
     const users = await prisma.user.findMany();
     res.json({
-      ok: true,
-      Users: users,
+      users: users,
     });
   } catch (err) {
     console.error(err);
@@ -37,4 +37,7 @@ router.use('/products',productRoutes);
 
 //cart routes
 router.use('/cart',cartRoutes);
+
+//order routes
+router.use('/order',orderRoutes)
 module.exports = router;
