@@ -39,5 +39,6 @@ router.use('/products',productRoutes);
 router.use('/cart',cartRoutes);
 
 //order routes
-router.use('/order',orderRoutes)
+router.use('/order',orderRoutes);
+
 module.exports = router;
