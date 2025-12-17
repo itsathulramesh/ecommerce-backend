@@ -2,8 +2,8 @@ const prisma = require('../models/prisma');
 
 //GET /api/cart
 const getCart = async (req, res) => {
+    const userId = req.user.id;
     try {
-        const userId = req.user.id;
         const cartItems = await prisma.cartItem.findMany({
             where: { userId },
             include: {
