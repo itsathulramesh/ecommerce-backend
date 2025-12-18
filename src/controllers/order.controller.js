@@ -4,7 +4,7 @@ const prisma = require('../models/prisma');
 const createOrder = async (req, res) => {
     const userId = req.user.id
     try {
-        const result = prisma.$transaction(async (tx) => {
+        const result = await prisma.$transaction(async (tx) => {
             //1. Get cart items
             const cartItems = await tx.cartItem.findMany({
                 where: { userId },
@@ -89,16 +89,80 @@ const createOrder = async (req, res) => {
 
 
 //GET /api/orders
-const getOrder = async (req, res) => {
+const getOrders = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const orders = await prisma.order.findMany({
+            where: { userId },
+            orderBy: { createdAt: "desc" },
+            include: {
+                items: {
+                    include: {
+                        product: {
+                            select: {
+                                id: true,
+                                name: true,
+                                imageUrl: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+        res.json({ orders })
 
+    } catch (error) {
+        console.error("Get orders error:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
 }
 
+//GET /api/orders/:id
 const getOrderById = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const orderId = parseInt(req.params.id);
+        if (isNaN(orderId)) {
+            return res.status(400).json({
+                message: "Order Id is required"
+            });
+        }
 
+        //check if the order is exists
+        const order = await prisma.order.findFirst({
+            where: { id: orderId, userId },
+            include: {
+                items: {
+                    include: {
+                        product: {
+                            select: {
+                                id: true,
+                                name: true,
+                                imageUrl: true,
+                            }
+                        },
+                    },
+                },
+            },
+        });
+
+        if (!order) {
+            return res.status(404).json({
+                message: "Order Not found"
+            })
+        }
+
+        res.json({ order });
+    } catch (error) {
+        console.log("Get order by id error", error);
+        res.status(500).json({
+            message: "Internal server error"
+        })
+    }
 }
 
 module.exports = {
     createOrder,
-    getOrder,
+    getOrders,
     getOrderById
 }

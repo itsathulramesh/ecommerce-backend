@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /api/order:
+ * /api/orders:
  *   post:
  *     summary: Place an order from cart
  *     description: >
@@ -14,7 +14,7 @@
  *       4. Create order items & reduce product stock  
  *       5. Clear cart
  *     tags:
- *       - Order
+ *       - Orders
  *     security:
  *       - bearerAuth: []
  *     responses:
