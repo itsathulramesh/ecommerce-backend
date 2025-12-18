@@ -26,6 +26,7 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "lint": "eslint . --ext .js",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "seed": "node src/dev/adminSeed.js"
   }
 }
