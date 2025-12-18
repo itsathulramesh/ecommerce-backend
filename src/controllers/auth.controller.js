@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 //register user
 const userRegister = async (req, res) => {
   try {
-    console.log(req.body);
     
     const { name, email, password } = req.body;
     //1. basic validation
@@ -35,6 +34,7 @@ const userRegister = async (req, res) => {
         name,
         email,
         password: hashPassword,
+        role: "USER" // 🔐 FORCE ROLE 
       },
     });
 
@@ -93,7 +93,7 @@ const userLogin = async (req,res)=>{
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET,
-      {expiresIn: '1h'}
+      {expiresIn: '7d'}
     );
 
     //send response
