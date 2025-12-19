@@ -11,8 +11,14 @@ const options = {
     servers: [
       {
         url: "http://localhost:5000",
+        description: "Localhost (Backend on same machine)"
       },
+      {
+        url: "http://192.168.1.85:5000",
+        description: "LAN IP (Mobile / Other devices)"
+      }
     ],
+
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -31,10 +37,10 @@ const options = {
 
   // IMPORTANT: point to routes
   apis: [
-  "./src/routes/*.js",
-  "./src/docs/*.js"
-]
-,
+    "./src/routes/*.js",
+    "./src/docs/*.js"
+  ]
+  ,
 };
 
 module.exports = swaggerJsdoc(options);

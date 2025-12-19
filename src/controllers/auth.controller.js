@@ -3,7 +3,7 @@ const prisma = require("../models/prisma");
 const jwt = require('jsonwebtoken');
 
 
-//register user
+//POST /api/auth/login register user
 const userRegister = async (req, res) => {
   try {
     
@@ -37,7 +37,7 @@ const userRegister = async (req, res) => {
         role: "USER" // 🔐 FORCE ROLE 
       },
     });
-
+    console.log("user created: ",user);
     //5. return response excluding the password
     res.status(201).json({
       message: "User registered successfully",
@@ -57,7 +57,7 @@ const userRegister = async (req, res) => {
 };
 
 
-//user login
+//POST /api/auth/login  user login
 const userLogin = async (req,res)=>{
   try{
     const { email, password } = req.body;

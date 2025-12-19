@@ -8,6 +8,8 @@ const swaggerSpec = require("./config/swagger");
 
 const app = express();
 const PORT = process.env.PORT;
+//swagger doc
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(helmet());
 app.use(cors());
@@ -16,8 +18,6 @@ app.use(express.json());
 //Routes
 app.get('/',(req,res)=>res.status(200).json({status: 200, message: "Ecom backend running ...."}));
 
-//swagger doc
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //all routes
 app.use('/api',routes);
