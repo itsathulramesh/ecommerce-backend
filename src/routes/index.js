@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const prisma = require("../models/prisma");
+// const prisma = require("../models/prisma");
 
 const authRoutes = require("./auth.routes");
 const productRoutes = require('./product.routes');
@@ -16,18 +16,18 @@ router.get("/health", (req, res) => {
 });
 
 
-//databse connection test
-router.get("/test-db", async (req, res) => {
-  try {
-    const users = await prisma.user.findMany();
-    res.json({
-      users: users,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "DB error" });
-  }
-});
+// //databse connection test
+// router.get("/test-db", async (req, res) => {
+//   try {
+//     const users = await prisma.user.findMany();
+//     res.json({
+//       users: users,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "DB error" });
+//   }
+// });
 
 //auth routes
 router.use("/auth",authRoutes);
